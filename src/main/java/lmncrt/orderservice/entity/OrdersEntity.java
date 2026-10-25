@@ -3,12 +3,19 @@ package lmncrt.orderservice.entity;
 
 import jakarta.persistence.*;
 import lmncrt.orderservice.service.OrderStatus;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class OrdersEntity{
 
     @Id
@@ -26,81 +33,13 @@ public class OrdersEntity{
     @Column(name = "status")
     private OrderStatus status;
 
-    @ManyToOne
-    @JoinColumn(name = "item_id")
-    private ItemsEntity items;
+    @ManyToMany
+    @JoinTable(name = "link_orders_items",
+            joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "items_id", referencedColumnName = "id"))
+    private List<ItemsEntity> items;
 
     @Column(name = "total_amount", precision = 12, scale = 2)
     private BigDecimal totalAmount;
 
-    @Column(name = "order_id", nullable = false)
-    private Long orderId;
-
-    public Long getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
-    }
-
-    public OrdersEntity() {
-    }
-
-    public OrdersEntity(Long id, Long userId, LocalDate createdAt, OrderStatus status, ItemsEntity items, BigDecimal totalAmount) {
-        this.id = id;
-        this.userId = userId;
-        this.createdAt = createdAt;
-        this.status = status;
-        this.items = items;
-        this.totalAmount = totalAmount;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public LocalDate getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDate createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public OrderStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(OrderStatus status) {
-        this.status = status;
-    }
-
-    public ItemsEntity getItems() {
-        return items;
-    }
-
-    public void setItems(ItemsEntity items) {
-        this.items = items;
-    }
-
-    public BigDecimal getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(BigDecimal totalAmount) {
-        this.totalAmount = totalAmount;
-    }
 }

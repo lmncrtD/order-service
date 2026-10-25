@@ -1,22 +1,25 @@
 package lmncrt.orderservice.service;
 
-import lmncrt.orderservice.entity.OrdersEntity;
-import lmncrt.orderservice.repository.OrdersRepository;
-import org.springframework.stereotype.Service;
 
+import lmncrt.orderservice.dto.OrdersDto;
+import lmncrt.orderservice.entity.ItemsEntity;
+import lmncrt.orderservice.entity.OrdersEntity;
+
+import java.math.BigDecimal;
 import java.util.List;
 
-@Service
-public class OrderService {
+public interface OrderService {
 
-    private final OrdersRepository ordersRepository;
+    List<OrdersDto> getOrders();
 
-    public OrderService(OrdersRepository ordersRepository) {
-        this.ordersRepository = ordersRepository;
-    }
+    BigDecimal calculateTotalAmountByOrderId(Long id);
 
-    public List<OrdersEntity> getOrders() {
-        return ordersRepository.findAllOrders();
-    }
+    OrdersDto findById(Long id);
+
+    List<OrdersDto> findAllOrdersByUserId(Long id);
+
+    OrdersDto createOrder(OrdersDto order);
+
+
 
 }

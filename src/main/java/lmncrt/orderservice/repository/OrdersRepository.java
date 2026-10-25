@@ -11,8 +11,23 @@ public interface OrdersRepository extends JpaRepository<OrdersEntity, Long> {
     @Query(value = """
         SELECT o.*
         FROM public.orders o
-        ORDER BY o.order_id, o.id
         """,nativeQuery = true)
     List<OrdersEntity> findAllOrders();
+
+    @Query(
+            value = """
+                    SELECT o.*
+                    FROM public.orders o
+                    WHERE o.user_id = :id
+                    """,
+            nativeQuery = true)
+    List<OrdersEntity> findAllOrdersByUserId(Long id);
+
+    @Query(value = """
+        SELECT o.*
+        FROM public.orders o
+        WHERE o.id = :id
+    """, nativeQuery = true)
+    OrdersEntity findbById(Long id);
 
 }
