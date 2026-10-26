@@ -23,11 +23,11 @@ public interface OrdersRepository extends JpaRepository<OrdersEntity, Long> {
             nativeQuery = true)
     List<OrdersEntity> findAllOrdersByUserId(Long id);
 
-    @Query(value = """
-        SELECT o.*
-        FROM public.orders o
-        WHERE o.id = :id
-    """, nativeQuery = true)
-    OrdersEntity findbById(Long id);
+//    @Query(value = """
+//        SELECT o.*
+//        FROM public.orders o
+//        WHERE o.id = :id
+//    """, nativeQuery = true)
+//    OrdersEntity findbById(Long id);
 
 }

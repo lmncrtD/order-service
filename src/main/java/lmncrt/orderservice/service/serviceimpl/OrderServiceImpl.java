@@ -1,11 +1,10 @@
 package lmncrt.orderservice.service.serviceimpl;
 
-import jakarta.persistence.Id;
-import jakarta.transaction.Transactional;
-import lmncrt.orderservice.api.OrderController;
 import lmncrt.orderservice.dto.OrdersDto;
 import lmncrt.orderservice.entity.ItemsEntity;
 import lmncrt.orderservice.entity.OrdersEntity;
+import lmncrt.orderservice.exceptions.ClientNotFoundException;
+import lmncrt.orderservice.exceptions.OrderNotFoundException;
 import lmncrt.orderservice.mapper.OrdersMapper;
 import lmncrt.orderservice.repository.ItemsRepository;
 import lmncrt.orderservice.repository.OrdersRepository;
@@ -50,7 +49,14 @@ public class OrderServiceImpl implements OrderService {
     // Поиск заказов по id заказа
     @Override
     public OrdersDto findById(Long id) {
-        OrdersEntity entity = ordersRepository.findbById(id);
+        OrdersEntity entity = ordersRepository.findById(id)
+                .orElseThrow(() -> {
+                    log.warn("Заказ под таким ID = {}, не найден", id);
+
+                    return new OrderNotFoundException(
+                            id
+                    );
+                });
         return ordersMapper.toDto(entity);
     }
 
@@ -58,6 +64,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrdersDto> findAllOrdersByUserId(Long id) {
         List<OrdersEntity> entity = ordersRepository.findAllOrdersByUserId(id);
+        if(entity.isEmpty()) {
+            throw new ClientNotFoundException(id);
+        }
         return ordersMapper.toDtoList(entity);
     }
 
@@ -65,7 +74,14 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public BigDecimal calculateTotalAmountByOrderId(Long id){
         OrdersEntity order = ordersRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Заказ не найден"));
+                .orElseThrow(() -> {
+                    log.warn("Клиента с id = {} не найден", id);
+
+                    return new ResponseStatusException(
+                            HttpStatus.NOT_FOUND,
+                            "Заказ не найден");
+                }
+                );
         List<ItemsEntity> items = order.getItems();
 
         BigDecimal totalAmount = BigDecimal.ZERO;
@@ -91,7 +107,19 @@ public class OrderServiceImpl implements OrderService {
         List<ItemsEntity> loadedItems = new ArrayList<>();
         List<ItemsEntity> items = entity.getItems();
         for (ItemsEntity item : items){
-            loadedItems.add(itemsRepository.findItemsById(item.getId()));
+            ItemsEntity itemEntity = itemsRepository.findById(item.getId())
+                    .orElseThrow(
+                            () -> {
+                                log.warn("Товар с id={} не найден", item.getId());
+
+                                return new ResponseStatusException(
+                                        HttpStatus.NOT_FOUND,
+                                        "Товар с id=" + item.getId() + " не найден"
+                                );
+                            }
+                    );
+
+            loadedItems.add(itemEntity);
         }
         entity.setItems(loadedItems);
 

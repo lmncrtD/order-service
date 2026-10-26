@@ -7,6 +7,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.List;
+import java.util.Optional;
 
 @Mapper(componentModel = "spring")
 public interface OrdersMapper {
@@ -17,5 +18,6 @@ public interface OrdersMapper {
     List<OrdersDto> toDtoList(List<OrdersEntity> entity);
 
     OrdersEntity toEntity(OrdersDto dto);
+
 
 }
