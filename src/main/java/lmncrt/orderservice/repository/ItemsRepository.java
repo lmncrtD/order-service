@@ -15,6 +15,6 @@ public interface ItemsRepository extends JpaRepository<ItemsEntity, Long> {
             """, nativeQuery = true)
     List<ItemsEntity> findAll();
 
-    ItemsEntity findItemsById(Long id);
+    //ItemsEntity findItemsById(Long id);
 
 }

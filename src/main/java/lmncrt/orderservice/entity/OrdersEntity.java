@@ -6,6 +6,7 @@ import lmncrt.orderservice.service.OrderStatus;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class OrdersEntity{
     private Long userId;
 
     @Column(name = "created_at")
-    private LocalDate createdAt;
+    private Instant createdAt;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
@@ -41,5 +42,9 @@ public class OrdersEntity{
 
     @Column(name = "total_amount", precision = 12, scale = 2)
     private BigDecimal totalAmount;
+
+    @Version
+    @Column(name = "version", nullable = false)
+    protected int version;
 
 }

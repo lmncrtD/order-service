@@ -1,8 +1,7 @@
 package lmncrt.orderservice.api.error;
 
 import lmncrt.orderservice.dto.errors.ApiError;
-import lmncrt.orderservice.exceptions.ClientNotFoundException;
-import lmncrt.orderservice.exceptions.OrderNotFoundException;
+import lmncrt.orderservice.exceptions.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,4 +39,61 @@ public class GlobalExceptionHandler {
                 )
         );
     }
+
+    @ExceptionHandler(ItemNotFoundException.class)
+    public ResponseEntity<ApiError> handleItemNotFound(
+            ItemNotFoundException exception
+    ){
+        return ResponseEntity.status(
+                HttpStatus.NOT_FOUND
+        ).body(
+                new ApiError(
+                        "ITEM_NOT_FOUND",
+                        exception.getMessage()
+                )
+        );
+    }
+
+    @ExceptionHandler(SomeItemsNotFoundException.class)
+    public ResponseEntity<ApiError> handleSomeItemsNotFound(
+            SomeItemsNotFoundException exception
+    ){
+        return ResponseEntity.status(
+                HttpStatus.NOT_FOUND
+        ).body(
+                new ApiError(
+                        "SOME_ITEMS_NOT_FOUND",
+                        exception.getMessage()
+                )
+        );
+    }
+
+    @ExceptionHandler(OrderStatusException.class)
+    public ResponseEntity<ApiError> handleOrderStatusException(
+            OrderStatusException exception
+    ) {
+        return ResponseEntity.status(
+                HttpStatus.BAD_REQUEST
+        ).body(
+                new ApiError(
+                        "ORDER_STATUS_EXCEPTION",
+                        exception.getMessage()
+                )
+        );
+    }
+
+    @ExceptionHandler(OrderAlreadyRegisteredException.class)
+    public ResponseEntity<ApiError> handleAlredyRegisteredOrder(
+            OrderAlreadyRegisteredException exception
+    ) {
+        return ResponseEntity.status(
+                HttpStatus.CONFLICT
+        ).body(
+                new ApiError(
+                        "ORDER_ALREADY_REGISTERED",
+                        exception.getMessage()
+                )
+        );
+    }
+
 }
