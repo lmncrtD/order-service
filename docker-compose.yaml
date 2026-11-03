@@ -13,7 +13,19 @@ services:
     image: apache/kafka:latest
     ports:
       - "127.0.0.1:9092:9092"
+  clickhouse:
+    image: clickhouse/clickhouse-server:25.8
+    environment:
+      CLICKHOUSE_DB: analytics
+      CLICKHOUSE_USER: analytics
+      CLICKHOUSE_PASSWORD: root
+    ports:
+      - "127.0.0.1:8123:8123"
+    volumes:
+      -  clickhouse_25_8_data:/var/lib/clickhouse
+
 
 volumes:
   postgres_data:
   kafka_data:
+  clickhouse_25_8_data:

@@ -1,0 +1,4 @@
+databaseChangeLog:
+  - include:
+      file: v1-analytics-service/create-tables.sql
+      relativeToChangelogFile: true
