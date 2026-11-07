@@ -5,6 +5,7 @@ import lmncrt.analyticsservice.mappers.OrderEventMapper;
 import lmncrt.analyticsservice.repository.OrderEventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
 import tools.jackson.databind.ObjectMapper;
 
@@ -17,10 +18,11 @@ public class OrderEventConsumer {
     private final OrderEventRepository orderEventRepository;
 
     @KafkaListener(topics = "orders.events")
-    public void consume(String message) {
+    public void consume(String message, Acknowledgment acknowledgment) {
         var dto = objectMapper.readValue(message, OrderEventDto.class);
         var entity = orderEventMapper.toEntity(dto);
         orderEventRepository.save(entity);
+        acknowledgment.acknowledge();
     }
 
 }
