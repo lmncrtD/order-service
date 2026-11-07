@@ -16,6 +16,7 @@ public interface OutboxRepository extends JpaRepository<OutboxEntity, UUID> {
             WHERE published_at IS NULL
             ORDER BY created_at ASC, event_id ASC
             LIMIT 100
+            FOR UPDATE
             """, nativeQuery = true
     )
     List<OutboxEntity> findUnpublishedBatch();
