@@ -78,15 +78,13 @@ public class OrderStatisticsServiceImpl implements OrderStatisticsService {
             );
         }
 
-        var resultAnalyticsByPeriod = orderStatisticsRepository.findLastAnalyticsByPeriod(dateFrom, dateTo).orElseThrow(
+        return orderStatisticsRepository.findLastAnalyticsByPeriod(dateFrom, dateTo).orElseThrow(
                 () -> new AnalyticsException(
                         "ANALYTICS_NOT_FOUND_BY_PERIOD",
                         "Analytics data is not found by period",
                         HttpStatus.NOT_FOUND
                 )
         );
-
-        return resultAnalyticsByPeriod;
     }
 
     // Статистика по заказам по конкретному клиенту, если по клиенту ничего не найдем, вернем 200 без тела
@@ -99,18 +97,6 @@ public class OrderStatisticsServiceImpl implements OrderStatisticsService {
 
     // Сравниваем два снимка. Прошлый и тот, что пришел.
     private boolean hasSameMetrics(OrderStatisticsDto oldDto, OrderStatisticsDto newDto) {
-
-        if (
-                oldDto.countOrders().equals(newDto.countOrders())
-                && oldDto.createdOrders().equals(newDto.createdOrders())
-                && oldDto.completedOrders().equals(newDto.completedOrders())
-                && oldDto.cancelledOrders().equals(newDto.cancelledOrders())
-                && oldDto.totalAmountCompletedOrders().compareTo(newDto.totalAmountCompletedOrders()) == 0
-                && oldDto.avgAmountOrders().compareTo(newDto.avgAmountOrders()) == 0
-        ) {
-            return true;
-        }
-        return false;
-
+        return oldDto.equals(newDto);
     }
 }

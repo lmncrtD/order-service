@@ -191,6 +191,8 @@ public class OrderServiceImpl implements OrderService {
                 orderEvent.occurredAt(),
                 orderEvent.orderId(),
                 eventJson,
+                null,
+                null,
                 null
         );
 
@@ -327,6 +329,8 @@ public class OrderServiceImpl implements OrderService {
                     orderEvent.occurredAt(),
                     orderEvent.orderId(),
                     eventJson,
+                    null,
+                    null,
                     null
             );
 
@@ -368,6 +372,8 @@ public class OrderServiceImpl implements OrderService {
                 orderEvent.occurredAt(),
                 orderEvent.orderId(),
                 eventJson,
+                null,
+                null,
                 null
         );
 

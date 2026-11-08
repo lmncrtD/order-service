@@ -1,0 +1,4 @@
+databaseChangeLog:
+  - include:
+      file: v1-analytics-service/shedlock-create-table.sql
+      relativeToChangelogFile: true

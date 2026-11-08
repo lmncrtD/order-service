@@ -127,3 +127,8 @@ SELECT o.id, i.id FROM order_three o CROSS JOIN monitor i;
 --changeset Lmncrt:010-delete-column
 ALTER TABLE public.items
     DROP COLUMN item_count;
+
+--changeset Lmncrt:011-add-two-columns
+ALTER TABLE public.outbox
+    ADD COLUMN locked_until TIMESTAMP WITH TIME ZONE,
+    ADD COLUMN lock_token UUID;

@@ -23,9 +23,20 @@ services:
       - "127.0.0.1:8123:8123"
     volumes:
       -  clickhouse_25_8_data:/var/lib/clickhouse
+  shedlock_postgres_data:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: analytics_locks
+      POSTGRES_USER: shedlock
+      POSTGRES_PASSWORD: root
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - shedlock_postgres_data:/var/lib/postgresql
 
 
 volumes:
   postgres_data:
   kafka_data:
   clickhouse_25_8_data:
+  shedlock_postgres_data:

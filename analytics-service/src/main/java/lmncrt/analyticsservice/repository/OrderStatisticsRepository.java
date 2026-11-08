@@ -79,15 +79,7 @@ public class OrderStatisticsRepository {
                 orderStatisticsDto.totalAmountCompletedOrders(),
                 orderStatisticsDto.avgAmountOrders()
                 );
-
-
     }
-
-//    public void refreshAnalytics () throws IOException {
-//        ClassPathResource res = new ClassPathResource("sql/insert-refresh-order-statistics.sql");
-//        var contentSql = res.getContentAsString(StandardCharsets.UTF_8);
-//        jdbcTemplate.execute(contentSql);
-//    }
 
     public Optional<OrderStatisticsDto> findLastAnalytics () {
         var analytics = jdbcTemplate.query(

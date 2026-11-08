@@ -36,5 +36,11 @@ public class OutboxEntity {
     @Column(name = "published_at")
     private Instant publishedAt;
 
+    @Column(name = "locked_until")
+    private Instant lockedUntil;
+
+    @Column(name = "lock_token")
+    private UUID lockToken;
+
 
 }
